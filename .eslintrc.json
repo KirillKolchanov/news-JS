@@ -1,6 +1,10 @@
 {
-    "plugins": ["prettier", "import"],
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint", "prettier", "import"],
     "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
         "plugin:prettier/recommended",
         "prettier"
     ],
@@ -13,9 +17,22 @@
         "browser": true,
         "node": true
     },
+    "ignorePatterns": ["dist", "node_modules"],
     "rules": {
+        "@typescript-eslint/no-explicit-any": "error",
         "no-debugger": "off",
         "no-console": 0,
         "class-methods-use-this": "off"
-    }
+    },
+    "overrides": [
+        {
+            "files": ["webpack*.js"],
+            "parserOptions": {
+                "sourceType": "script"
+            },
+            "rules": {
+                "@typescript-eslint/no-var-requires": "off"
+            }
+        }
+    ]
 }

@@ -1,11 +1,17 @@
 .sources {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
     width: 100%;
-    height: 120px;
-    overflow: auto;
-    align-items: center;
-    font: 300 1em 'Fira Sans', sans-serif;
+    max-height: 152px;
+    overflow-y: auto;
+    padding: 8px 4px;
+    font:
+        300 1em 'Fira Sans',
+        sans-serif;
+    scrollbar-width: thin;
+    scrollbar-color: #30c5ff transparent;
 }
 
 .source__item {
@@ -13,8 +19,9 @@
     border: 2px solid #30c5ff;
     font: inherit;
     line-height: 1;
-    margin: 0.5em;
-    padding: 1em 2em;
+    margin: 0;
+    padding: 0.6em 1.2em;
+    font-size: 14px;
     color: #70d6ff;
     transition: 0.25s;
     cursor: pointer;
@@ -28,7 +35,19 @@
     transform: translateY(-0.25em);
 }
 
+.source__item--active {
+    border-color: #3fcc59;
+    color: #69db7e;
+    background: rgba(63, 204, 89, 0.12);
+}
+
 .source__item-name {
     font-weight: 400;
     white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+    .sources {
+        max-height: 200px;
+    }
 }
