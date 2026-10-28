@@ -23,5 +23,16 @@
         "no-debugger": "off",
         "no-console": 0,
         "class-methods-use-this": "off"
-    }
+    },
+    "overrides": [
+        {
+            "files": ["webpack*.js"],
+            "parserOptions": {
+                "sourceType": "script"
+            },
+            "rules": {
+                "@typescript-eslint/no-var-requires": "off"
+            }
+        }
+    ]
 }
