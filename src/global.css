@@ -1,7 +1,15 @@
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
     color: #fff;
     background: #17181c;
     font-family: sans-serif;
+}
+
+main {
+    flex: 1;
 }
 
 header {
@@ -13,23 +21,28 @@ header h1 {
     font-weight: 800;
 }
 
-footer {
-    height: 100px;
+.footer {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-}
-footer .copyright {
+    gap: 16px 32px;
+    padding: 24px 16px;
+    border-top: 1px solid #2a2c33;
     font-size: 14px;
-    color: #333;
-    text-align: center;
+    color: #a2a2a2;
 }
-footer .copyright a {
-    color: #444;
+
+.footer a {
+    color: #70d6ff;
+    text-decoration: none;
 }
-footer .copyright a:hover {
-    color: #555;
+
+.footer a:hover {
+    color: #69db7e;
 }
-footer .copyright:before {
-    content: '©';
+
+.footer__logo {
+    display: block;
+    filter: invert(1);
 }
