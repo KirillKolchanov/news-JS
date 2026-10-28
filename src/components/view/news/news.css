@@ -185,3 +185,34 @@
         max-width: none;
     }
 }
+
+.news__message {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 48px 16px;
+    text-align: center;
+    font-size: 18px;
+    color: #a2a2a2;
+}
+
+.news__message--error {
+    color: #ff6b6b;
+}
+
+.news__message--loading::after {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 32px;
+    margin: 16px auto 0;
+    border: 3px solid #30c5ff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: news-spin 0.8s linear infinite;
+}
+
+@keyframes news-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -1,11 +1,16 @@
 import './news.css';
-import { IArticle } from '../../../types';
+import { IArticle, MessageType } from '../../../types';
 
 const MAX_NEWS_COUNT = 10;
 const IMAGE_PLACEHOLDER = 'img/news_placeholder.jpg';
 
 class News {
     public draw(data: readonly IArticle[]): void {
+        if (!data.length) {
+            this.drawMessage('No news from this source yet', MessageType.Info);
+            return;
+        }
+
         const news = data.slice(0, MAX_NEWS_COUNT);
         const fragment = document.createDocumentFragment();
         const newsItemTemp = document.querySelector<HTMLTemplateElement>('#newsItemTemp');
@@ -32,6 +37,17 @@ class News {
         });
 
         newsContainer.replaceChildren(fragment);
+    }
+
+    public drawMessage(text: string, type: MessageType): void {
+        const newsContainer = document.querySelector<HTMLElement>('.news');
+        if (!newsContainer) return;
+
+        const message = document.createElement('p');
+        message.className = `news__message news__message--${type}`;
+        message.textContent = text;
+
+        newsContainer.replaceChildren(message);
     }
 
     private setText(root: ParentNode, selector: string, text: string | null): void {

@@ -1,19 +1,19 @@
 import AppLoader from './appLoader';
-import { Callback, Endpoint, NewsResponse, SourcesResponse } from '../../types';
+import { Callback, Endpoint, ErrorCallback, NewsResponse, SourcesResponse } from '../../types';
 
 class AppController extends AppLoader {
     public getSources(callback: Callback<SourcesResponse>): void {
         super.getResp<SourcesResponse>({ endpoint: Endpoint.Sources }, callback);
     }
 
-    public getNews(e: Event, callback: Callback<NewsResponse>): void {
+    public getNews(e: Event, callback: Callback<NewsResponse>, onError?: ErrorCallback): boolean {
         let target: EventTarget | null = e.target;
         const newsContainer = e.currentTarget;
 
-        if (!(newsContainer instanceof HTMLElement)) return;
+        if (!(newsContainer instanceof HTMLElement)) return false;
 
         while (target !== newsContainer) {
-            if (!(target instanceof HTMLElement)) return;
+            if (!(target instanceof HTMLElement)) return false;
 
             if (target.classList.contains('source__item')) {
                 const sourceId = target.getAttribute('data-source-id');
@@ -25,13 +25,20 @@ class AppController extends AppLoader {
                             endpoint: Endpoint.Everything,
                             options: { sources: sourceId },
                         },
-                        callback
+                        callback,
+                        (error) => {
+                            newsContainer.removeAttribute('data-source');
+                            onError?.(error);
+                        }
                     );
+                    return true;
                 }
-                return;
+                return false;
             }
             target = target.parentNode;
         }
+
+        return false;
     }
 
     private setActiveSource(container: HTMLElement, activeItem: HTMLElement): void {
