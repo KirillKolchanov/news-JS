@@ -56,6 +56,14 @@ export type HttpMethod = 'GET' | 'POST';
 
 export type Callback<T> = (data: T) => void;
 
+export type ErrorCallback = (error: Error) => void;
+
+export enum MessageType {
+    Info = 'info',
+    Error = 'error',
+    Loading = 'loading',
+}
+
 export interface IRequestOptions {
     apiKey: string;
     sources: string;

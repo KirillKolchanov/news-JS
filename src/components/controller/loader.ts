@@ -1,4 +1,4 @@
-import { Callback, Endpoint, HttpMethod, HttpStatus, IRequestParams, RequestOptions } from '../../types';
+import { Callback, Endpoint, ErrorCallback, HttpMethod, HttpStatus, IRequestParams, RequestOptions } from '../../types';
 
 class Loader {
     constructor(
@@ -10,16 +10,17 @@ class Loader {
         { endpoint, options = {} }: IRequestParams,
         callback: Callback<T> = () => {
             console.error('No callback for GET response');
-        }
+        },
+        onError?: ErrorCallback
     ): void {
-        this.load('GET', endpoint, callback, options);
+        this.load<T>('GET', endpoint, callback, options, onError);
     }
 
     private errorHandler(res: Response): Response {
         if (!res.ok) {
             if (res.status === HttpStatus.Unauthorized || res.status === HttpStatus.NotFound)
                 console.log(`Sorry, but there is ${res.status} error: ${res.statusText}`);
-            throw Error(res.statusText);
+            throw new Error(`Request failed with status ${res.status}`);
         }
 
         return res;
@@ -36,12 +37,21 @@ class Loader {
         return url.slice(0, -1);
     }
 
-    private load<T>(method: HttpMethod, endpoint: Endpoint, callback: Callback<T>, options: RequestOptions = {}): void {
+    private load<T>(
+        method: HttpMethod,
+        endpoint: Endpoint,
+        callback: Callback<T>,
+        options: RequestOptions = {},
+        onError?: ErrorCallback
+    ): void {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
             .then((res) => res.json() as Promise<T>)
             .then((data) => callback(data))
-            .catch((err: unknown) => console.error(err));
+            .catch((err: unknown) => {
+                console.error(err);
+                onError?.(err instanceof Error ? err : new Error(String(err)));
+            });
     }
 }
 
