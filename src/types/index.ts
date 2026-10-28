@@ -41,3 +41,29 @@ export type NewsResponse = ApiResponse<{
     totalResults: number;
     articles: IArticle[];
 }>;
+
+export enum Endpoint {
+    Sources = 'sources',
+    Everything = 'everything',
+}
+
+export enum HttpStatus {
+    Unauthorized = 401,
+    NotFound = 404,
+}
+
+export type HttpMethod = 'GET' | 'POST';
+
+export type Callback<T> = (data: T) => void;
+
+export interface IRequestOptions {
+    apiKey: string;
+    sources: string;
+}
+
+export type RequestOptions = Partial<IRequestOptions>;
+
+export interface IRequestParams {
+    endpoint: Endpoint;
+    options?: RequestOptions;
+}
